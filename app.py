@@ -19,7 +19,7 @@ def get_pdf_text(pdf_docs):
     return text
 
 
-def get_text_chunks(text):
+def get_text_chunks(text):  # sourcery skip: inline-immediately-returned-variable
     text_splitter = CharacterTextSplitter(
         separator="\n",
         chunk_size=1000,
@@ -31,6 +31,7 @@ def get_text_chunks(text):
 
 
 def get_vectorstore(text_chunks):
+    # sourcery skip: inline-immediately-returned-variable
     embeddings = OpenAIEmbeddings()
     # embeddings = HuggingFaceInstructEmbeddings(model_name="hkunlp/instructor-xl")
     vectorstore = FAISS.from_texts(texts=text_chunks, embedding=embeddings)
@@ -64,7 +65,7 @@ def handle_userinput(user_question):
                 "{{MSG}}", message.content), unsafe_allow_html=True)
 
 
-def main():
+def main():  # sourcery skip: use-named-expression
     load_dotenv()
     st.set_page_config(page_title="Chat with multiple PDFs",
                        page_icon=":books:")
@@ -75,17 +76,18 @@ def main():
     if "chat_history" not in st.session_state:
         st.session_state.chat_history = None
 
-    st.header("Chat with multiple PDFs :books:")
-    user_question = st.text_input("Ask a question about your documents:")
+    st.header("Hacer preguntas sobre tus propios docuemntos PDF's :books:")
+    user_question = st.text_input("Formular pregunta de tus formularios cargados:")
     if user_question:
         handle_userinput(user_question)
+        user_question = None
 
     with st.sidebar:
-        st.subheader("Your documents")
+        st.subheader("Tus documentos PDF's")
         pdf_docs = st.file_uploader(
             "Upload your PDFs here and click on 'Process'", accept_multiple_files=True)
-        if st.button("Process"):
-            with st.spinner("Processing"):
+        if st.button("Procesar Carga"):
+            with st.spinner("Procesando ..."):
                 # get pdf text
                 raw_text = get_pdf_text(pdf_docs)
 
@@ -98,6 +100,9 @@ def main():
                 # create conversation chain
                 st.session_state.conversation = get_conversation_chain(
                     vectorstore)
+                
+                # set a sucess message
+                st.success("¡Carga exitosa! Ahora puedes hacer preguntas sobre tus documentos PDF's")
 
 
 if __name__ == '__main__':
