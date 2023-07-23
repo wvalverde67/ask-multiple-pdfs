@@ -76,16 +76,16 @@ def main():  # sourcery skip: use-named-expression
     if "chat_history" not in st.session_state:
         st.session_state.chat_history = None
 
-    st.header("Hacer preguntas sobre tus propios docuemntos PDF's :books:")
-    user_question = st.text_input("Formular pregunta de tus formularios cargados:")
+    st.header("Hacer preguntas con PDF's :books:")
+    user_question = st.text_input("Formular pregunta PDF's cargados:")
     if user_question:
         handle_userinput(user_question)
-        user_question = None
+        # reset user question to empty string
 
     with st.sidebar:
         st.subheader("Tus documentos PDF's")
         pdf_docs = st.file_uploader(
-            "Upload your PDFs here and click on 'Process'", accept_multiple_files=True)
+            "Cargar tus PDF's y luego 'Procesar Carga'", accept_multiple_files=True)
         if st.button("Procesar Carga"):
             with st.spinner("Procesando ..."):
                 # get pdf text
@@ -101,7 +101,7 @@ def main():  # sourcery skip: use-named-expression
                 st.session_state.conversation = get_conversation_chain(
                     vectorstore)
                 
-                # set a sucess message
+                # set a sucess message but only if the user has uploaded a pdf and the chat history is empty
                 st.success("¡Carga exitosa! Ahora puedes hacer preguntas sobre tus documentos PDF's")
 
 
