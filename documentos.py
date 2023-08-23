@@ -67,7 +67,7 @@ def handle_userinput(user_question):
 
 def main():  # sourcery skip: use-named-expression
     load_dotenv()
-    st.set_page_config(page_title="Chat with multiple PDFs",
+    st.set_page_config(page_title="Chatear con multiples PDFs",
                        page_icon=":books:")
     st.write(css, unsafe_allow_html=True)
 
@@ -77,10 +77,11 @@ def main():  # sourcery skip: use-named-expression
         st.session_state.chat_history = None
 
     st.header("Hacer preguntas con PDF's :books:")
-    user_question = st.text_input("Formular pregunta PDF's cargados:")
+    user_question = st.text_input("Formular pregunta PDF's cargados:", value="")
     if user_question:
         handle_userinput(user_question)
         # reset user question to empty string
+        
 
     with st.sidebar:
         st.subheader("Tus documentos PDF's")
